@@ -7,7 +7,6 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.114",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "axios": "^0.27.2",
@@ -24,9 +23,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prebuild": "ts-node scripts/fetchData.ts",
+    "build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +48,8 @@
   },
   "proxy": "https://opendata.resas-portal.go.jp",
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/node": "^22.7.7",
+    "ts-node": "^10.9.2"
   }
 }

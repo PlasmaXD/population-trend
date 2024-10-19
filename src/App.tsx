@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PrefectureSelector from './components/PrefectureSelector';
 import PopulationChart from './components/PopulationChart';
 import { fetchPopulationComposition, fetchPrefectures } from './api/resas';
+import prefecturesData from './data/prefectures.json';
+
 
 interface PopulationComposition {
   year: number;
@@ -25,14 +27,14 @@ const App: React.FC = () => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
 
 
-  useEffect(() => {
-    const getPrefectures = async () => {
-      const data = await fetchPrefectures();
-      console.log('Fetched prefectures:', data);
-      setPrefectures(data);
-    };
-    getPrefectures();
-  }, []);
+  // useEffect(() => {
+  //   const getPrefectures = async () => {
+  //     const data = await fetchPrefectures();
+  //     console.log('Fetched prefectures:', data);
+  //     setPrefectures(data);
+  //   };
+  //   getPrefectures();
+  // }, []);
 
   const handlePrefChange = (prefCode: number) => {
     setSelectedPrefectures((prev) =>
