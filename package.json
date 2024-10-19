@@ -25,7 +25,7 @@
     "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prebuild": "ts-node scripts/fetchData.ts",
+    "prebuild": "ts-node ./scripts/fetchData.ts",
     "build": "react-scripts build"
   },
   "eslintConfig": {
