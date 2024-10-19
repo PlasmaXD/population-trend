@@ -1,0 +1,11 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+@media (max-width: 768px) {
+  /* スマートフォン向けのスタイル */
+  h1 {
+    font-size: 1.5em;
+  }
+}
