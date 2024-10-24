@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+// src/components/PrefectureSelector.tsx
+import React from 'react';
 
 interface Prefecture {
   prefCode: number;
@@ -11,7 +12,11 @@ interface Props {
   onChange: (prefCode: number) => void;
 }
 
-const PrefectureSelector: React.FC<Props> = ({ prefectures, selectedPrefectures, onChange }) => {
+const PrefectureSelector: React.FC<Props> = ({ prefectures = [], selectedPrefectures, onChange }) => {
+  if (!prefectures || prefectures.length === 0) {
+    return <div>都道府県のデータがありません。</div>;
+  }
+
   return (
     <div>
       {prefectures.map((pref) => (
