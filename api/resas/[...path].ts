@@ -4,6 +4,7 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 const axios = require('axios');
 
 const RESAS_API_BASE_URL = 'https://opendata.resas-portal.go.jp/api/v1';
+const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const { path = [] } = req.query;
@@ -15,7 +16,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 
     const response = await axios.get(`${RESAS_API_BASE_URL}/${apiPath}`, {
       headers: {
-        'X-API-KEY': process.env.RESAS_API_KEY!,
+        'X-API-KEY': RESAS_API_KEY,
       },
       params: req.query,
     });
