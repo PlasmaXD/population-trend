@@ -37,8 +37,16 @@ export const fetchPrefectures = async () => {
   }
 };
 
+// PopulationComposition インターフェースをエクスポート
+export interface PopulationComposition {
+  year: number;
+  total: number;
+  young: number;
+  working: number;
+  elderly: number;
+}
 
-export const fetchPopulationComposition = async (prefCode: number) => {
+export const fetchPopulationComposition = async (prefCode: number): Promise<PopulationComposition[] | null> => {
   try {
     const response = await apiClient.get('/population/composition/perYear', {
       params: {
@@ -46,7 +54,29 @@ export const fetchPopulationComposition = async (prefCode: number) => {
         cityCode: '-',
       },
     });
-    return response.data.result;
+    const result = response.data.result;
+
+    // データの整形
+    const data = result.data;
+    if (!Array.isArray(data) || data.length === 0) {
+      throw new Error('Invalid response format');
+    }
+
+    // 年度の配列を取得
+    const years = data[0].data.map((item: { year: number }) => item.year);
+
+    // 各人口データをマッピング
+    const populationData: PopulationComposition[] = years.map((year: number, index: number) => {
+      return {
+        year,
+        total: data[0].data[index].value,
+        young: data[1].data[index].value,
+        working: data[2].data[index].value,
+        elderly: data[3].data[index].value,
+      };
+    });
+
+    return populationData;
   } catch (error) {
     console.error(`Failed to fetch population composition for prefCode ${prefCode}:`, error);
     return null;
