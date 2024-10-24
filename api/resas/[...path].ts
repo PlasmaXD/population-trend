@@ -12,7 +12,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 
   try {
     // 環境変数の値をログに出力（デバッグ用、デプロイ後に削除してください）
-    console.log('RESAS_API_KEY:', process.env.RESAS_API_KEY);
+    console.log('RESAS_API_KEY:', RESAS_API_KEY);
 
     const response = await axios.get(`${RESAS_API_BASE_URL}/${apiPath}`, {
       headers: {
