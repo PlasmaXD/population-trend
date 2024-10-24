@@ -31,11 +31,12 @@ const App: React.FC = () => {
       try {
         const data = await fetchPrefectures();
         console.log('Fetched prefectures:', data); // デバッグ用ログ
-        if (data.length === 0) {
-          setError('都道府県のデータ取得に失敗しました。');
-        } else {
+        if (data && data.length > 0) {
           setPrefectures(data);
+        } else {
+          setError('都道府県のデータ取得に失敗しました。');
         }
+        
       } catch (error) {
         console.error('Error fetching prefectures:', error);
         setError('都道府県データの取得に失敗しました。');

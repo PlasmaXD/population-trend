@@ -14,12 +14,19 @@ const apiClient = axios.create({
 export const fetchPrefectures = async () => {
   try {
     const response = await apiClient.get('/prefectures');
-    return response.data.result;
+    console.log('Response data from API:', response.data);
+
+    if (response.data && response.data.result) {
+      return response.data.result;
+    } else {
+      throw new Error('Invalid response format');
+    }
   } catch (error) {
     console.error('Failed to fetch prefectures:', error);
-    return [];
+    throw error;
   }
 };
+
 
 export const fetchPopulationComposition = async (prefCode: number) => {
   try {
