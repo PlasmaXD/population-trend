@@ -24,10 +24,10 @@
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
+    "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "prebuild": "ts-node ./scripts/fetchData.ts",
-    "build": "react-scripts build"
-  },
+    "prebuild": "ts-node ./scripts/fetchData.ts"
+    },
   "eslintConfig": {
     "extends": [
       "react-app",
