@@ -1,12 +1,8 @@
 // api/resas/[...path].ts
 // const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
 
-
-// api/resas/[...path].ts
-
-// api/resas/[...path].ts
-
 const axios = require('axios');
+const fetch = require('node-fetch');
 
 const RESAS_API_BASE_URL = 'https://opendata.resas-portal.go.jp/api/v1';
 const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
@@ -16,9 +12,10 @@ module.exports = async (req, res) => {
   const apiPath = Array.isArray(path) ? path.join('/') : path;
 
   try {
-    // 動的インポートで public-ip を読み込む
-    const publicIp = await import('public-ip');
-    const ipAddress = await publicIp.publicIpv4();
+    // IP アドレスを取得
+    const ipResponse = await fetch('https://api.ipify.org?format=json');
+    const ipData = await ipResponse.json();
+    const ipAddress = ipData.ip;
     console.log('Serverless function IP address:', ipAddress);
 
     const headers = {
