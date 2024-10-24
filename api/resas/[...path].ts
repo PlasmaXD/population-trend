@@ -1,7 +1,7 @@
 // api/resas/[...path].ts
 
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import axios from 'axios';
+const axios = require('axios');
 
 const RESAS_API_BASE_URL = 'https://opendata.resas-portal.go.jp/api/v1';
 
