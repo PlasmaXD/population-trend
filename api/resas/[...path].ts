@@ -12,6 +12,7 @@ const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
 
 module.exports = async (req, res) => {
   const { path = [], ...query } = req.query;
+  delete query.path; // 必要に応じて 'path' を削除
   const apiPath = Array.isArray(path) ? path.join('/') : path;
 
   try {
