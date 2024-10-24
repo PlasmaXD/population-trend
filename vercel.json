@@ -1,0 +1,8 @@
+{
+    "functions": {
+      "api/resas.ts": {
+        "runtime": "vercel-node@18.x"
+      }
+    }
+  }
+  
