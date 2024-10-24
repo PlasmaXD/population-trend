@@ -17,14 +17,23 @@ export const fetchPrefectures = async () => {
     const response = await apiClient.get('/prefectures');
     console.log('Response data from API:', response.data);
 
-    if (response.data && response.data.result) {
+  
+    if (response.status === 200 && response.data && response.data.result) {
       return response.data.result;
     } else {
       throw new Error('Invalid response format');
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to fetch prefectures:', error);
-    throw error;
+
+    // エラーレスポンスのステータスコードを確認
+    if (error.response) {
+      const status = error.response.status;
+      const message = error.response.data?.message || error.message;
+      throw new Error(`Error ${status}: ${message}`);
+    } else {
+      throw error;
+    }
   }
 };
 
