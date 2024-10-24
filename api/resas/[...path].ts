@@ -15,6 +15,7 @@ module.exports = async (req, res) => {
   const apiPath = Array.isArray(path) ? path.join('/') : path;
 
   try {
+    console.log('RESAS_API_KEY:', RESAS_API_KEY);
     const response = await axios.get(`${RESAS_API_BASE_URL}/${apiPath}`, {
       headers: {
         'X-API-KEY': RESAS_API_KEY,

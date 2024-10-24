@@ -3,12 +3,13 @@ import axios from 'axios';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const RESAS_API_BASE_URL = isProduction ? '/api/resas' : '/api/v1';
+const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
 
 const apiClient = axios.create({
   baseURL: RESAS_API_BASE_URL,
   headers: isProduction
     ? {}
-    : { 'X-API-KEY': process.env.REACT_APP_RESAS_API_KEY! },
+    : { 'X-API-KEY': RESAS_API_KEY },
 });
 
 export const fetchPrefectures = async () => {
