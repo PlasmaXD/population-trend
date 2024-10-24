@@ -1,38 +1,29 @@
 // api/resas/[...path].ts
 // const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
+// api/resas/[...path].ts
 
 const axios = require('axios');
-const fetch = require('node-fetch');
 
 const RESAS_API_BASE_URL = 'https://opendata.resas-portal.go.jp/api/v1';
+// ハードコードした API キーを使用
 const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
-
 module.exports = async (req, res) => {
   const { path = [], ...query } = req.query;
   const apiPath = Array.isArray(path) ? path.join('/') : path;
 
+  // リクエストヘッダーを定義
+  const headers = {
+    'X-API-KEY': RESAS_API_KEY,
+  };
+
+  // デバッグ用にリクエストヘッダーをログに出力
+  console.log('Request headers:', headers);
+
   try {
-    // IP アドレスを取得
-    const ipResponse = await fetch('https://api.ipify.org?format=json');
-    const ipData = await ipResponse.json();
-    const ipAddress = ipData.ip;
-    console.log('Serverless function IP address:', ipAddress);
-
-    const headers = {
-      'X-API-KEY': RESAS_API_KEY,
-      'User-Agent': 'VercelServerlessFunction',
-      'Accept': 'application/json',
-    };
-
-    console.log('Requesting RESAS API with headers:', headers);
-    console.log('Requesting RESAS API with query params:', query);
-
     const response = await axios.get(`${RESAS_API_BASE_URL}/${apiPath}`, {
       headers,
       params: query,
     });
-
-    console.log('RESAS API response:', response.data);
 
     res.status(response.status).json(response.data);
   } catch (error) {
@@ -44,3 +35,4 @@ module.exports = async (req, res) => {
     });
   }
 };
+
