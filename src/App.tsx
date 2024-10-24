@@ -1,9 +1,8 @@
+// src/App.tsx
 import React, { useState, useEffect } from 'react';
 import PrefectureSelector from './components/PrefectureSelector';
 import PopulationChart from './components/PopulationChart';
 import { fetchPopulationComposition, fetchPrefectures } from './api/resas';
-// import prefecturesData from './data/prefectures.json';
-
 
 interface PopulationComposition {
   year: number;
@@ -25,13 +24,22 @@ const App: React.FC = () => {
   const [populationData, setPopulationData] = useState<{ [key: number]: PopulationComposition[] }>({});
   const [currentType, setCurrentType] = useState<PopulationType>('total');
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
-
+  const [error, setError] = useState<string | null>(null); // エラーステートを追加
 
   useEffect(() => {
     const getPrefectures = async () => {
-      const data = await fetchPrefectures();
-      console.log('Fetched prefectures:', data);
-      setPrefectures(data);
+      try {
+        const data = await fetchPrefectures();
+        console.log('Fetched prefectures:', data); // デバッグ用ログ
+        if (data.length === 0) {
+          setError('都道府県のデータ取得に失敗しました。');
+        } else {
+          setPrefectures(data);
+        }
+      } catch (error) {
+        console.error('Error fetching prefectures:', error);
+        setError('都道府県データの取得に失敗しました。');
+      }
     };
     getPrefectures();
   }, []);
@@ -45,21 +53,20 @@ const App: React.FC = () => {
   useEffect(() => {
     const getPopulationData = async () => {
       const data: { [key: number]: PopulationComposition[] } = {};
-      await Promise.all(
-        selectedPrefectures.map(async (prefCode) => {
-          const res = await fetchPopulationComposition(prefCode);
-          const composition = res.data[0].data;
-          const formattedData = composition.map((item: any) => ({
-            year: item.year,
-            total: item.value,
-            young: item['year'] < 1980 ? null : item.value, // 年少人口などのデータを適切に設定
-            working: item['year'] < 1980 ? null : item.value,
-            elderly: item['year'] < 1980 ? null : item.value,
-          }));
-          data[prefCode] = formattedData;
-        })
-      );
-      setPopulationData(data);
+      try {
+        await Promise.all(
+          selectedPrefectures.map(async (prefCode) => {
+            const res = await fetchPopulationComposition(prefCode);
+            if (res) {
+              data[prefCode] = res;
+            }
+          })
+        );
+        setPopulationData(data);
+      } catch (error) {
+        console.error('Error fetching population data:', error);
+        setError('人口データの取得に失敗しました。');
+      }
     };
 
     if (selectedPrefectures.length > 0) {
@@ -69,8 +76,7 @@ const App: React.FC = () => {
     }
   }, [selectedPrefectures]);
 
-
-  const prefNames = (prefectures ?? []).reduce((acc, pref) => {
+  const prefNames = prefectures.reduce((acc, pref) => {
     acc[pref.prefCode] = pref.prefName;
     return acc;
   }, {} as { [key: number]: string });
@@ -84,7 +90,7 @@ const App: React.FC = () => {
     const sortedYears = Array.from(years).sort();
 
     return sortedYears.map((year) => {
-      const entry: any = { year };
+      const entry: Record<string, number | string> = { year };
       selectedPrefectures.forEach((prefCode) => {
         const prefEntry = populationData[prefCode]?.find((e) => e.year === year);
         if (prefEntry) {
@@ -98,11 +104,15 @@ const App: React.FC = () => {
   return (
     <div>
       <h1>都道府県別総人口推移グラフ</h1>
-      <PrefectureSelector
-        prefectures={prefectures}
-        selectedPrefectures={selectedPrefectures}
-        onChange={handlePrefChange}
-      />
+      {error ? (
+        <div style={{ color: 'red' }}>{error}</div>
+      ) : (
+        <PrefectureSelector
+          prefectures={prefectures}
+          selectedPrefectures={selectedPrefectures}
+          onChange={handlePrefChange}
+        />
+      )}
 
       <div>
         <label>
