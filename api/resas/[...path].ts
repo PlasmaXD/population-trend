@@ -2,7 +2,7 @@
 // const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
 // api/resas/[...path].ts
 
-const axios = require('axios');
+import axios from 'axios';
 
 const RESAS_API_BASE_URL = 'https://opendata.resas-portal.go.jp/api/v1';
 // ハードコードした API キーを使用
