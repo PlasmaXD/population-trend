@@ -4,31 +4,29 @@
 
 // api/resas/[...path].ts
 
+// api/resas/[...path].ts
+
 const axios = require('axios');
 
 const RESAS_API_BASE_URL = 'https://opendata.resas-portal.go.jp/api/v1';
-// ハードコードした API キーを使用（テスト後は必ず削除してください）
 const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
-
 
 module.exports = async (req, res) => {
   const { path = [], ...query } = req.query;
   const apiPath = Array.isArray(path) ? path.join('/') : path;
 
   try {
-    // サーバーレス関数の IP アドレスを取得
+    // 動的インポートで public-ip を読み込む
     const publicIp = await import('public-ip');
     const ipAddress = await publicIp.publicIpv4();
     console.log('Serverless function IP address:', ipAddress);
 
-    // リクエストヘッダーを設定
     const headers = {
       'X-API-KEY': RESAS_API_KEY,
       'User-Agent': 'VercelServerlessFunction',
       'Accept': 'application/json',
     };
 
-    // リクエストヘッダーとパラメータをログに出力
     console.log('Requesting RESAS API with headers:', headers);
     console.log('Requesting RESAS API with query params:', query);
 
@@ -37,7 +35,6 @@ module.exports = async (req, res) => {
       params: query,
     });
 
-    // レスポンスデータをログに出力（デバッグ用）
     console.log('RESAS API response:', response.data);
 
     res.status(response.status).json(response.data);
