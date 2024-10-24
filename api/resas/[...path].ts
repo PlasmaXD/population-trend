@@ -7,7 +7,10 @@ const axios = require('axios');
 const RESAS_API_BASE_URL = 'https://opendata.resas-portal.go.jp/api/v1';
 // ハードコードした API キーを使用
 const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
-module.exports = async (req, res) => {
+if (!RESAS_API_KEY) {
+  throw new Error('RESAS_API_KEY is not defined');
+}
+export default async (req, res) => {
   const { path = [], ...query } = req.query;
   const apiPath = Array.isArray(path) ? path.join('/') : path;
 
