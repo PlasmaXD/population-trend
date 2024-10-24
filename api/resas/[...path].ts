@@ -1,11 +1,13 @@
 // api/resas/[...path].ts
+// const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
 
-const { VercelRequest, VercelResponse } = require('@vercel/node');
+
 const axios = require('axios');
 
 const RESAS_API_BASE_URL = 'https://opendata.resas-portal.go.jp/api/v1';
-// 環境変数に戻す場合は以下を使用
+// 環境変数を使用する場合は以下を使用
 // const RESAS_API_KEY = process.env.RESAS_API_KEY;
+// ハードコードする場合は以下を使用（セキュリティ上のリスクがあるため、テスト後は削除）
 const RESAS_API_KEY = 'JtdQUD3xcxseR2F486RQwNH2QY0Titu6J87gT30G';
 
 module.exports = async (req, res) => {
@@ -20,7 +22,6 @@ module.exports = async (req, res) => {
       params: query,
     });
 
-    // レスポンスデータをそのまま返す
     res.status(response.status).json(response.data);
   } catch (error) {
     console.error(`Error fetching ${apiPath}:`, error.message);
@@ -30,4 +31,3 @@ module.exports = async (req, res) => {
     });
   }
 };
-
